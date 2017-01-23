@@ -1,6 +1,6 @@
-import { ModuleConfiguration, ModuleTypeDefinition, ModuleCollectionDefinition } from '../../src/module-configuration';
+import { ResolverConfiguration, ModuleTypeDefinition, ModuleCollectionDefinition } from '../../src/resolver-configuration';
 
-export const componentsOnlyConfiguration: ModuleConfiguration = {
+export const componentsOnlyConfiguration: ResolverConfiguration = {
   types: {
     'component': { 
       definitiveCollection: 'components' 

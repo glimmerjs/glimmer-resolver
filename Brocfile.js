@@ -1,8 +1,10 @@
 const build = require('@glimmer/build');
+const globSync = require('glob').sync;
+const path = require('path');
+
+const glimmerEngine = path.join(path.dirname(require.resolve('glimmer-engine/package')), 'dist/amd/glimmer-common.amd.js');
+const glimmerDi = globSync(path.join(path.dirname(require.resolve('@glimmer/di/package')), 'dist/amd/es5/**/*.js'));
 
 module.exports = build({
-  testDependencies: [
-    'node_modules/glimmer-engine/dist/amd/glimmer-common.amd.js',
-    'node_modules/@glimmer/di/dist/amd/es5/**/*.js'
-  ]
+  testDependencies: [glimmerEngine].concat(glimmerDi)
 });
