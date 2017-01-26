@@ -13,7 +13,7 @@
   ],
   "repository": "https://github.com/glimmerjs/glimmer-resolver",
   "license": "MIT",
-  "main": "dist/commonjs/es2017/index.js",
+  "main": "dist/commonjs/es5/index.js",
   "module": "dist/modules/es2017/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
