@@ -1,10 +1,17 @@
+"use strict";
+
 const build = require('@glimmer/build');
-const globSync = require('glob').sync;
+const buildVendorPackage = require('@glimmer/build/lib/build-vendor-package');
+const funnel = require('broccoli-funnel');
 const path = require('path');
 
-const glimmerEngine = path.join(path.dirname(require.resolve('glimmer-engine/package')), 'dist/amd/glimmer-common.amd.js');
-const glimmerDi = globSync(path.join(path.dirname(require.resolve('@glimmer/di/package')), 'dist/amd/es5/**/*.js'));
+let buildOptions = {};
 
-module.exports = build({
-  testDependencies: [glimmerEngine].concat(glimmerDi)
-});
+if (process.env.BROCCOLI_ENV === 'tests') {
+  buildOptions.vendorTrees = [
+    buildVendorPackage('@glimmer/util'),
+    funnel(path.dirname(require.resolve('@glimmer/di/package')), { include: ['dist/amd/es5/**/*.js'] })
+  ];
+}
+
+module.exports = build(buildOptions);
