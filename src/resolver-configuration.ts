@@ -1,4 +1,4 @@
-import { Dict } from 'glimmer-util';
+import { Dict } from '@glimmer/util';
 
 export interface PackageDefinition {
   /**

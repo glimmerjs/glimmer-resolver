@@ -1,5 +1,5 @@
 import { ModuleRegistry } from '../module-registry';
-import { dict, Dict } from 'glimmer-util';
+import { dict, Dict } from '@glimmer/util';
 
 export default class BasicRegistry implements ModuleRegistry {
   private _entries: Dict<any>;
