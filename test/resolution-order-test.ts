@@ -278,3 +278,42 @@ test('Identifies `component:my-input/stylized` as an export from an addon', func
   let resolver = new Resolver(config, registry);
   assert.strictEqual(resolver.identify('component:my-input/stylized'), 'component:/my-input/components/stylized');
 });
+
+test('Identifies `template` from definitive collection or fallback collection', function(assert) {
+  let config: ResolverConfiguration = {
+    app: {
+      name: 'example-app',
+      rootName: 'example-app-root-name'
+    },
+    types: {
+      template: {
+        definitiveCollection: 'routes',
+        fallbackCollectionPrefixes: {
+          'components': 'components'
+        }
+      },
+    },
+    collections: {
+      components: {
+        group: 'ui',
+        types: [ 'component', 'template' ],
+        defaultType: 'component'
+      },
+      routes: {
+        group: 'ui',
+        types: ['route', 'template']
+    },
+    }
+  };
+  let registry = new BasicRegistry({
+    'template:/example-app-root-name/routes/application': 'a',
+    'template:/example-app-root-name/components/components/my-input': 'b'
+  });
+  let resolver = new Resolver(config, registry);
+
+  assert.strictEqual(resolver.identify('template:application'),
+                     'template:/example-app-root-name/routes/application');
+
+  assert.strictEqual(resolver.identify('template:components/my-input'),
+                     'template:/example-app-root-name/components/components/my-input');
+});
