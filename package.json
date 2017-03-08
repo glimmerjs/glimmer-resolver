@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@glimmer/di": "^0.1.8",
-    "@glimmer/util": "^0.21.0"
+    "@glimmer/util": "tildeio/glimmer#04b62c5"
   },
   "devDependencies": {
     "@glimmer/build": "^0.2.1",
