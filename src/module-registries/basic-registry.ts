@@ -1,10 +1,10 @@
 import { ModuleRegistry } from '../module-registry';
-import { dict, Dict } from '@glimmer/util';
+import { Dict } from '@glimmer/di';
 
 export default class BasicRegistry implements ModuleRegistry {
   private _entries: Dict<any>;
 
-  constructor(entries: Dict<any> = dict<any>()) {
+  constructor(entries: Dict<any> = {}) {
     this._entries = entries;
   }
 
