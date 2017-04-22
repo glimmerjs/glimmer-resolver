@@ -45,7 +45,7 @@ export default class Resolver implements IResolver {
         if (result = this._serializeAndVerify(s)) { return result; }
 
         // Look for a private collection in the referrer's namespace
-        let privateCollection = this._definitiveCollection(s.type);
+        let privateCollection = this._definitiveCollection(s.type, s.namespace);
         if (privateCollection) {
           s.namespace += '/-' + privateCollection;
           if (result = this._serializeAndVerify(s)) { return result; }
@@ -58,14 +58,14 @@ export default class Resolver implements IResolver {
         assert('Referrer must either be "absolute" or include a `type` to determine the associated type', r.type);
 
         // Look in the definitive collection for the associated type
-        s.collection = this._definitiveCollection(r.type);
+        s.collection = this._definitiveCollection(r.type, r.namespace);
         assert(`'${r.type}' does not have a definitive collection`, s.collection);
       }
     }
 
     // If the collection is unspecified, use the definitive collection for the `type`
     if (!s.collection) {
-      s.collection = this._definitiveCollection(s.type);
+      s.collection = this._definitiveCollection(s.type, s.namespace);
       assert(`'${s.type}' does not have a definitive collection`, s.collection);
     }
 
@@ -102,9 +102,15 @@ export default class Resolver implements IResolver {
     }
   }
 
-  private _definitiveCollection(type: string): string {
+  private _definitiveCollection(type: string, collection: string): string {
     let typeDef = this.config.types[type];
     assert(`'${type}' is not a recognized type`, typeDef);
+
+    if (typeDef.fallbackCollectionPrefixes &&
+      typeDef.fallbackCollectionPrefixes[collection]) {
+        return typeDef.fallbackCollectionPrefixes[collection];
+    }
+
     return typeDef.definitiveCollection;
   }
 
