@@ -1,6 +1,6 @@
 {
   "name": "@glimmer/resolver",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Resolver for Glimmer apps.",
   "contributors": [
     "Dan Gebhardt <dan@cerebris.com>",
