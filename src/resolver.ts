@@ -33,21 +33,32 @@ export default class Resolver implements IResolver {
       if (isSpecifierObjectAbsolute(r)) {
         assert('Specifier must not include a rootName, collection, or namespace when combined with an absolute referrer', s.rootName === undefined && s.collection === undefined && s.namespace === undefined);
 
-        // Look locally in the referrer's namespace
         s.rootName = r.rootName;
         s.collection = r.collection;
-        if (s.name) {
-          s.namespace = r.namespace ? r.namespace + '/' + r.name : r.name;
-        } else {
+        let definitiveCollection = this._definitiveCollection(s.type);
+
+        if (!s.name) {
+          /*
+           * For specifiers without a name use the referrer's name and
+           * do not fallback to any other resolution rules.
+           */
           s.namespace = r.namespace;
           s.name = r.name;
+          return this._serializeAndVerify(s);
         }
-        if (result = this._serializeAndVerify(s)) { return result; }
+
+        s.namespace = r.namespace ? r.namespace + '/' + r.name : r.name;
+        if (s.collection === definitiveCollection) {
+          /*
+           * For specifiers with a name, try local resolution. Based on
+           * the referrer.
+           */
+          if (result = this._serializeAndVerify(s)) { return result; }
+        }
 
         // Look for a private collection in the referrer's namespace
-        let privateCollection = this._definitiveCollection(s.type);
-        if (privateCollection) {
-          s.namespace += '/-' + privateCollection;
+        if (definitiveCollection) {
+          s.namespace += '/-' + definitiveCollection;
           if (result = this._serializeAndVerify(s)) { return result; }
         }
 
