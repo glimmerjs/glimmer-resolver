@@ -45,7 +45,7 @@ export default class Resolver implements IResolver {
         if (result = this._serializeAndVerify(s)) { return result; }
 
         // Look for a private collection in the referrer's namespace
-        let privateCollection = this._definitiveCollection(s.type);
+        let privateCollection = this._privateCollection(s.type);
         if (privateCollection) {
           s.namespace += '/-' + privateCollection;
           if (result = this._serializeAndVerify(s)) { return result; }
@@ -106,6 +106,12 @@ export default class Resolver implements IResolver {
     let typeDef = this.config.types[type];
     assert(`'${type}' is not a recognized type`, typeDef);
     return typeDef.definitiveCollection;
+  }
+
+  private _privateCollection(type: string): string {
+    let typeDef = this.config.types[type];
+    assert(`'${type}' is not a recognized type`, typeDef);
+    return typeDef.privateCollection;
   }
 
   private _serializeAndVerify(specifier: Specifier): string {
