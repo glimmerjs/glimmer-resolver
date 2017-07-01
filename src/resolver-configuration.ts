@@ -32,6 +32,7 @@ export interface PackageDefinition {
 
 export interface ModuleTypeDefinition {
   definitiveCollection?: string;
+  privateCollection?: string;
   unresolvable?: boolean;
 }
 
