@@ -7,6 +7,7 @@ import {
   serializeSpecifier
 } from '@glimmer/di';
 import { assert } from './utils/debug';
+import { detectLocalResolutionCollection } from './utils/specifiers';
 import { ModuleRegistry } from './module-registry';
 import { ResolverConfiguration } from './resolver-configuration';
 
@@ -48,7 +49,7 @@ export default class Resolver implements IResolver {
         }
 
         s.namespace = r.namespace ? r.namespace + '/' + r.name : r.name;
-        if (s.collection === definitiveCollection) {
+        if (detectLocalResolutionCollection(s) === definitiveCollection) {
           /*
            * For specifiers with a name, try local resolution. Based on
            * the referrer.
