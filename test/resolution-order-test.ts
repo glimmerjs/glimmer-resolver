@@ -205,6 +205,39 @@ test('Identifies `template` in `components` private collection from `template:/a
                      'template:/app/routes/my-page/-components/my-form');
 });
 
+test('Identifies local lookup in a private collection', function(assert) {
+  let config: ResolverConfiguration = {
+    app: {
+      name: 'example-app'
+    },
+    types: {
+      template: { definitiveCollection: 'components' },
+      component: { definitiveCollection: 'components' }
+    },
+    collections: {
+      routes: {
+        group: 'ui',
+        types: [ 'template' ]
+      },
+      components: {
+        group: 'ui',
+        types: [ 'component', 'template' ],
+        defaultType: 'component'
+      }
+    }
+  };
+  let registry = new BasicRegistry({
+    /* Expect that this entry is not matched */
+    'template:/app/routes/my-page/-components/my-form/-components/my-input': 'a',
+    /* Expect that this entry is matched */
+    'template:/app/routes/my-page/-components/my-form/my-input': 'a'
+  });
+  let resolver = new Resolver(config, registry);
+  assert.strictEqual(resolver.identify('template:my-input',
+                                       'template:/app/routes/my-page/-components/my-form'),
+                     'template:/app/routes/my-page/-components/my-form/my-input');
+});
+
 /**
  * Associated module resolution - If an associated type is specified, look in the definitive collection for that associated type. Only resolve
  * if the collection can contain the requested type.

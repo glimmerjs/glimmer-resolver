@@ -10,6 +10,23 @@ import { assert } from './utils/debug';
 import { ModuleRegistry } from './module-registry';
 import { ResolverConfiguration } from './resolver-configuration';
 
+function detectLocalResolutionCollection(namespace) {
+  let collection;
+
+  if (namespace) {
+    let segments = namespace.split('/');
+    let segment;
+    while (segment = segments.pop()) {
+      if (segment.indexOf('-') === 0) {
+        collection = segment.slice(1);
+        break;
+      }
+    }
+  }
+
+  return collection;
+}
+
 export default class Resolver implements IResolver {
   public config: ResolverConfiguration;
   public registry: ModuleRegistry;
@@ -48,7 +65,9 @@ export default class Resolver implements IResolver {
         }
 
         s.namespace = r.namespace ? r.namespace + '/' + r.name : r.name;
-        if (s.collection === definitiveCollection) {
+        if (
+          (detectLocalResolutionCollection(s.namespace) || s.collection) === definitiveCollection
+        ) {
           /*
            * For specifiers with a name, try local resolution. Based on
            * the referrer.
