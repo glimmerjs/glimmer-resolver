@@ -10,18 +10,16 @@ import { assert } from './utils/debug';
 import { ModuleRegistry } from './module-registry';
 import { ResolverConfiguration } from './resolver-configuration';
 
-function detectLocalResolutionCollection(namespace) {
-  let collection;
+function detectLocalResolutionCollection(specifier: Specifier): string {
+  let { namespace, collection } = specifier;
 
-  if (namespace) {
-    let segments = namespace.split('/');
-    let segment;
-    while (segment = segments.pop()) {
-      if (segment.indexOf('-') === 0) {
-        collection = segment.slice(1);
-        break;
-      }
-    }
+  // Look for the local-most private collection contained in the namespace
+  // (which will appear closest to the end of the string)
+  let startPos = namespace.lastIndexOf('/-');
+  if (startPos > -1) {
+    startPos += 2;
+    let endPos = namespace.indexOf('/', startPos);
+    collection = namespace.slice(startPos, endPos > -1 ? endPos : undefined);
   }
 
   return collection;
@@ -65,9 +63,7 @@ export default class Resolver implements IResolver {
         }
 
         s.namespace = r.namespace ? r.namespace + '/' + r.name : r.name;
-        if (
-          (detectLocalResolutionCollection(s.namespace) || s.collection) === definitiveCollection
-        ) {
+        if (detectLocalResolutionCollection(s) === definitiveCollection) {
           /*
            * For specifiers with a name, try local resolution. Based on
            * the referrer.
