@@ -71,6 +71,9 @@ export default class Resolver implements IResolver {
 
         // Look in the definitive collection for the associated type
         s.collection = this._definitiveCollection(r.type);
+        if (!s.namespace) {
+          s.namespace = r.rootName;
+        }
         assert(`'${r.type}' does not have a definitive collection`, s.collection);
       }
     }
@@ -89,11 +92,13 @@ export default class Resolver implements IResolver {
       // Then look for an addon with a matching `rootName`
       let addonDef;
       if (s.namespace) {
+        // Seems bad that addonDef is basically ignored?
         addonDef = this.config.addons && this.config.addons[s.namespace];
         s.rootName = s.namespace;
         s.namespace = undefined;
 
       } else {
+        // Seems bad that addonDef is basically ignored?
         addonDef = this.config.addons && this.config.addons[s.name];
         s.rootName = s.name;
         s.name = 'main';
