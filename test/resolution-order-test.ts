@@ -404,3 +404,36 @@ test('Identifies `component:my-input/stylized` as an export from an addon', func
   let resolver = new Resolver(config, registry);
   assert.strictEqual(resolver.identify('component:my-input/stylized'), 'component:/my-input/components/stylized');
 });
+
+test('Identifies `service:i18n` with referrer `/other-namespace-addon/` as an export from an addon', function(assert) {
+  let config: ResolverConfiguration = {
+    app: {
+      name: 'example-app'
+    },
+    addons: {
+      'other-namespace-addon': {
+        name: 'other-namespace-name',
+        rootName: 'other-namespace-rootName'
+      }
+    },
+    types: {
+      service: {
+        definitiveCollection: 'services'
+      },
+    },
+    collections: {
+      services: {
+        types: ['service'],
+        defaultType: 'service'
+      }
+    }
+  };
+  let registry = new BasicRegistry({
+    'service:/other-namespace-addon/services/i18n': 'a'
+  });
+  let resolver = new Resolver(config, registry);
+  assert.strictEqual(
+    resolver.identify('service:i18n', '/other-namespace-addon/'),
+    'service:/other-namespace-addon/services/i18n'
+  );
+});
