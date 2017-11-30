@@ -4,7 +4,11 @@ dist: trusty
 
 node_js:
   - "6"
-  - "node"
+  - "8.2.1"
+# later node versions should be reenabled. See https://github.com/glimmerjs/glimmer-resolver/issues/22
+# was fixed to 8.2.1 to solve See https://github.com/glimmerjs/glimmer-resolver/issues/19
+# to reenable, uncomment the next line:
+# - "node"
 
 addons:
   firefox: "latest"
