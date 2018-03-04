@@ -328,12 +328,6 @@ test('Identifies `component:my-input` as the main export from an addon', functio
     app: {
       name: 'example-app'
     },
-    addons: {
-      'my-input': {
-        name: 'ember-my-input',
-        rootName: 'my-input'
-      }
-    },
     types: {
       template: {
       },
@@ -369,12 +363,6 @@ test('Identifies `component:my-input/stylized` as an export from an addon', func
     app: {
       name: 'example-app'
     },
-    addons: {
-      'my-input': {
-        name: 'ember-my-input',
-        rootName: 'my-input'
-      }
-    },
     types: {
       template: {
       },
@@ -409,12 +397,6 @@ test('Identifies `service:i18n` with referrer `service:/other-namespace-addon/` 
   let config: ResolverConfiguration = {
     app: {
       name: 'example-app'
-    },
-    addons: {
-      'other-namespace-addon': {
-        name: 'other-namespace-name',
-        rootName: 'other-namespace-rootName'
-      }
     },
     types: {
       service: {
