@@ -90,16 +90,11 @@ export default class Resolver implements IResolver {
       if (result = this._serializeAndVerify(s)) { return result; }
 
       // Then look for an addon with a matching `rootName`
-      let addonDef;
       if (s.namespace) {
-        // Seems bad that addonDef is basically ignored?
-        addonDef = this.config.addons && this.config.addons[s.namespace];
         s.rootName = s.namespace;
         s.namespace = undefined;
 
       } else {
-        // Seems bad that addonDef is basically ignored?
-        addonDef = this.config.addons && this.config.addons[s.name];
         s.rootName = s.name;
         s.name = 'main';
       }

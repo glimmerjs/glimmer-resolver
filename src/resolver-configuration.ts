@@ -45,7 +45,6 @@ export interface ModuleCollectionDefinition {
 
 export interface ResolverConfiguration {
   app?: PackageDefinition;
-  addons?: Dict<PackageDefinition>;
   types: Dict<ModuleTypeDefinition>;
   collections: Dict<ModuleCollectionDefinition>;
 }
